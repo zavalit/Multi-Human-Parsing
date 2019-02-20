@@ -7,8 +7,9 @@ import scipy.io as sio
 import random
 from PIL import Image
 import cv2
+import re
 
-import os 
+import os
 if not os.path.exists('./savings_bgfg/'):
     os.mkdir('./savings_bgfg/')
 if not os.path.exists('./sample_bgfg/'):
@@ -85,8 +86,7 @@ class data_provider():
         cnt = 0
         for i in f:
             i = i.strip()
-            segfile = i
-            jpgfile = i.replace('SegmentationClass','JPEGImages').replace('.png','.jpg')
+            (jpgfile, segfile) = re.split(r'\t+', i)
             jpg = img_reader.read_img(jpgfile,500,padding=True)
             seg = self.read_label(segfile)
             seg = img_reader.pad(seg,np.uint8,False)
